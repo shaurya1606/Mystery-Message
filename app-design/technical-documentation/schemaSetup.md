@@ -20,6 +20,8 @@ my-app/
 │   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   └── page.tsx
+│   ├── lib/
+│   │   └── dbConnect.ts
 │   ├── model/
 │   │   └── User.ts
 │   └── schemas/
@@ -41,8 +43,14 @@ my-app/
 
 2. **Folder Structure**
     - `src/app`: Contains global styles, layout, and main page.
+    - `src/lib`: Contains database connection logic (`dbConnect.ts`).
     - `src/model`: Contains Mongoose models.
     - `src/schemas`: Contains validation schemas for various features.
+
+3. **Database Connection**
+    - Created `src/lib/dbConnect.ts` to manage MongoDB connections using Mongoose.
+    - Utilizes environment variables from `.env` for secure configuration.
+    - Ensures single connection instance for performance and reliability.
 
 ---
 
@@ -106,6 +114,54 @@ my-app/
 
 ---
 
+### 3. **Database Connection (`lib/dbConnect.ts`)**
+
+- **Purpose:**  
+  Centralizes MongoDB connection logic for the app.
+- **Process:**
+    1. Imports `mongoose`.
+    2. Reads MongoDB URI from environment variables (`.env`).
+    3. Checks for existing connection to avoid multiple instances.
+    4. Connects to MongoDB and exports the connection for use in models and API routes.
+- **Example Code:**
+
+```typescript
+// filepath: d:\Mystry Message\my-app\src\lib\dbConnect.ts
+import mongoose from "mongoose";
+
+const MONGODB_URI = process.env.MONGODB_URI as string;
+
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable inside .env");
+}
+
+let cached = (global as any).mongoose || { conn: null, promise: null };
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      bufferCommands: false,
+    }).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  cached.conn = await cached.promise;
+  (global as any).mongoose = cached;
+  return cached.conn;
+}
+
+export default dbConnect;
+```
+
+- **Usage:**
+    - Import `dbConnect` in API routes or server-side logic before accessing models.
+    - Ensures database is connected before performing operations.
+
+---
+
 ## 🏗️ Design Patterns & Decisions
 
 ### 1. **Model-Driven Design**
@@ -117,12 +173,16 @@ my-app/
    - Ensures data integrity before database operations.
 
 ### 3. **Modular Structure**
-   - Clear separation between models, schemas, and UI.
+   - Clear separation between models, schemas, UI, and database logic.
    - Easy to extend and maintain.
 
 ### 4. **Type Safety**
    - TypeScript interfaces for all models and schemas.
    - Reduces runtime errors and improves developer experience.
+
+### 5. **Connection Management**
+   - Singleton pattern for MongoDB connection.
+   - Prevents redundant connections and improves performance.
 
 ---
 
@@ -136,6 +196,7 @@ graph TD
     D -->|signInSchema| E[Login]
     E -->|acceptMessageSchema| F[Accepting Messages]
     F -->|messageSchema| G[Message Stored]
+    B -->|dbConnect| H[(MongoDB)]
 ```
 
 ---
@@ -187,8 +248,7 @@ export default UserModel;
 ## 🏁 Summary
 
 - **Modular, type-safe, and scalable design.**
-- **Clear separation of concerns (models, schemas, UI).**
+- **Clear separation of concerns (models, schemas, UI, database connection).**
 - **Validation at every step for robust data integrity.**
-- **Ready for further feature development and integration.**
-
----
+- **Singleton database connection for reliability and performance.**
+- **Ready for
