@@ -251,4 +251,6 @@ export default UserModel;
 - **Clear separation of concerns (models, schemas, UI, database connection).**
 - **Validation at every step for robust data integrity.**
 - **Singleton database connection for reliability and performance.**
-- **Ready for
+- **Ready for further feature development and integration.**
+
+---
