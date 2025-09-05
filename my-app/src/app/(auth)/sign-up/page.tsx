@@ -82,7 +82,7 @@ function page() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full h-150 max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+      <div className="w-full  max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Join Mystery Message</h1>
           <p className="mb-4">
@@ -153,7 +153,7 @@ function page() {
         </Form>
         <div>
           Already a member?{' '}
-          <Link href="/auth/sign-in" className="text-blue-600 hover:text-blue-800">
+          <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
             Sign In
           </Link>
         </div>
