@@ -5,7 +5,7 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 
 export const {
-    handlers: { GET, POST },
+    handlers,
     auth,
     signIn,
     signOut
