@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Welcome Message",
+    "content": "Hello and welcome to Mystery Message!",
+    "receivedTime": "10 minutes ago"
+  },
+  {
+    "title": "Account Verified",
+    "content": "Your account has been successfully verified.",
+    "receivedTime": "20 hours ago"
+  },
+  {
+    "title": "New Feature",
+    "content": "Check out our new dashboard feature now live.",
+    "receivedTime": "1 day ago"
+  }
+]

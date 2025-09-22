@@ -18,12 +18,12 @@ const Navbar = () => {
       session ? (
         <>
           <span className='mr-4 ml-6'>Welcome, {user?.username || user?.email}</span>
-          <Button className="w-full md:w-auto ml-2" onClick={() => signOut({})}>Sign Out</Button>
+          <Button className="w-20 ml-2" onClick={() => signOut({})}>Sign Out</Button>
         </>
       ) : (
         <>
           <Link href="/sign-in" className="ml-6">
-            <Button className="w-full md:w-auto">Sign In</Button>
+            <Button className="w-20 ml-2">Sign In</Button>
           </Link>
         </>
       )
